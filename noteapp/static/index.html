@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NoteApp</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <h1>Notes</h1>
+        <div class="submitArea">
+            <div class="innerSubmitArea">
+                <form action="" onsubmit="submitNote(event)">
+                    <textarea id="noteTitleSubmit" placeholder="Title" rows="1"></textarea>
+                    <textarea id="noteContentSubmit" placeholder="Content" rows="5"></textarea>
+                    <div class="submitButton">
+                        <button>Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="notesContainer"></div>
+        <template id="noteTemplate">
+            <div class="note" data-noteid="">
+                <div class="innerNote">
+                    <!-- <div class="noteChanged"></div> -->
+                    <div class="noteTitle"></div>
+                    <div class="noteContent"></div>
+                    <!-- <div class="noteTags"></div> -->
+                    <div class="noteButtons">
+                        <button onclick="editNote(event)">Edit</button>
+                        <button onclick="deleteNote(event)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template id="noteEditTemplate">
+            <div class="innerNoteEdit">
+                <textarea id="noteTitleEdit" placeholder="Title" rows="1"></textarea>
+                <textarea id="noteContentEdit" placeholder="Content" rows="5"></textarea>
+                <div class="noteButtons">
+                    <button onclick="updateNote(event)">Update</button>
+                    <button onclick="deleteNote(event)">Delete</button>
+                </div>
+            </div>
+        </template>
+        <div id="result">RESULT</div>
+    </body>
+</html>

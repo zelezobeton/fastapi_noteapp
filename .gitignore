@@ -1,0 +1,4 @@
+noteapp/__pycache__
+noteapp/venv
+
+!.gitignore
