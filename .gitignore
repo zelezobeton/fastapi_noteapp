@@ -1,4 +1,5 @@
 noteapp/__pycache__
 noteapp/venv
 *.db
+README.md
 
