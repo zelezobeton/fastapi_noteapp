@@ -9,13 +9,11 @@
         <h1>Notes</h1>
         <div class="submitArea">
             <div class="innerSubmitArea">
-                <form action="" onsubmit="submitNote(event)">
-                    <textarea id="noteTitleSubmit" placeholder="Title" rows="1"></textarea>
-                    <textarea id="noteContentSubmit" placeholder="Content" rows="5"></textarea>
-                    <div class="submitButton">
-                        <button>Submit</button>
-                    </div>
-                </form>
+                <textarea id="noteTitleSubmit" placeholder="Title" rows="1"></textarea>
+                <textarea id="noteContentSubmit" placeholder="Content" rows="5"></textarea>
+                <div class="submitButton">
+                    <button onclick="submitNote(event)">Submit</button>
+                </div>
             </div>
         </div>
         <div class="notesContainer"></div>

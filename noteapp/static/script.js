@@ -1,37 +1,63 @@
-// Create websocket
-var ws = new WebSocket("ws://localhost:8000/ws");
+/* Manage reconnection of websockets. Everytime connection is lost, 
+functions must be assigned again to the new websocket */
+var ws;
+function connect() {
+    ws = new WebSocket('ws://localhost:8000/ws');
+    ws.onopen = function () {
+        // Get first few notes (Do I need note refresh every reconnection?)
+        ws.send(JSON.stringify({
+            'method': 'GET'
+        }));
+    };
 
-// Wait for messages from server
-ws.onmessage = function(event) {
-    var noteObj = JSON.parse(event.data);
+    // Wait for messages from server
+    ws.onmessage = function(event) {
+        var noteObj = JSON.parse(event.data);
 
-    // Decide what to do with message from server
-    if (noteObj['method'] == 'GET') {
-        var noteList = noteObj['note_list']
-        for (var item in noteList) {
-            displayNote(noteList[item], false)
+        // Decide what to do with message from server
+        if (noteObj['method'] == 'GET_BACK') {
+            var noteList = noteObj['note_list']
+            for (var item in noteList) {
+                displayNote(noteList[item], false)
+            }
+        } 
+        else if (noteObj['method'] == 'POST_BACK') {
+            displayNote(noteObj, true)
+            notify('SUBMITED', 'green')
+        }  
+        else if (noteObj['method'] == 'DELETE_BACK') {
+            notify('DELETED', 'green')
         }
-    } 
-    else if (noteObj['method'] == 'POST_BACK') {
-        displayNote(noteObj, true)
-        notify('SUBMITED')
-    }  
-    else if (noteObj['method'] == 'DELETE_BACK') {
-        notify('DELETED')
-    }
-    else if (noteObj['method'] == 'EDIT_BACK') {
-        notify('EDITED')
-    }
-};
+        else if (noteObj['method'] == 'EDIT_BACK') {
+            notify('EDITED', 'green')
+        }
+    };
 
-function notify(text){
+    // Try to reconnect (in case of server reload etc.)
+    ws.onclose = function (event) {
+        console.log('Socket is closed. Reconnect will be attempted in 1 second.', event.reason);
+        setTimeout(function () {
+            connect();
+        }, 1000);
+    };
+
+    // Log errors
+    ws.onerror = function (err) {
+        console.error('Socket encountered error: ', err.message, 'Closing socket');
+        ws.close();
+    };
+}
+connect();
+
+// Visualy comfort user, that his data is saved on server
+function notify(text, color){
     var res = document.querySelector("#result");
     var orig_color = res.style.color;
     var orig_text = res.textContent;
 
     // Don't change if it's in process of changing
     if (orig_text == 'RESULT') {
-        res.style.color = 'green';
+        res.style.color = color;
         res.textContent = text;
         setTimeout(function(){
             res.style.color = orig_color;

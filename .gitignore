@@ -1,4 +1,4 @@
 noteapp/__pycache__
 noteapp/venv
+*.db
 
-!.gitignore
