@@ -7,23 +7,29 @@
     </head>
     <body>
         <h1>Notes</h1>
+        <div class="searchArea">
+            <input type="text" id="searchText" placeholder="Search" onkeydown="searchText(event)"></input>
+        </div>
         <div class="submitArea">
             <div class="innerSubmitArea">
                 <textarea id="noteTitleSubmit" placeholder="Title" rows="1"></textarea>
                 <textarea id="noteContentSubmit" placeholder="Content" rows="5"></textarea>
+                <textarea id="noteTagsSubmit" placeholder="Tags" rows="1"></textarea>
                 <div class="submitButton">
                     <button onclick="submitNote(event)">Submit</button>
                 </div>
             </div>
         </div>
         <div class="notesContainer"></div>
+
+        <!-- Templates -->
         <template id="noteTemplate">
             <div class="note" data-noteid="">
                 <div class="innerNote">
-                    <!-- <div class="noteChanged"></div> -->
+                    <div class="noteChanged"></div>
                     <div class="noteTitle"></div>
                     <div class="noteContent"></div>
-                    <!-- <div class="noteTags"></div> -->
+                    <div class="noteTags" data-taglist=""></div>
                     <div class="noteButtons">
                         <button onclick="editNote(event)">Edit</button>
                         <button onclick="deleteNote(event)">Delete</button>
@@ -31,16 +37,21 @@
                 </div>
             </div>
         </template>
+        <template id="tagTemplate">
+            <div class="tag"></div>
+        </template>
         <template id="noteEditTemplate">
             <div class="innerNoteEdit">
                 <textarea id="noteTitleEdit" placeholder="Title" rows="1"></textarea>
                 <textarea id="noteContentEdit" placeholder="Content" rows="5"></textarea>
+                <textarea id="noteTagsEdit" placeholder="Tags" rows="1"></textarea>
                 <div class="noteButtons">
                     <button onclick="updateNote(event)">Update</button>
                     <button onclick="deleteNote(event)">Delete</button>
                 </div>
             </div>
         </template>
+        
         <div id="result">RESULT</div>
     </body>
 </html>

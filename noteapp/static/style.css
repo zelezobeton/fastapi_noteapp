@@ -10,7 +10,15 @@ html, body {
     padding: 0;
 }
 
-button, textarea, .submitArea, .innerSubmitArea, .notesContainer, .note {
+input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+button, input, .submitArea, .innerSubmitArea, .notesContainer, .note {
     border-radius: 4px;
 }
 
@@ -20,7 +28,7 @@ textarea {
     border: 1px solid lightgray;
     box-sizing: border-box;
     resize: vertical;
-    /* resize: none; */
+    vertical-align: top;
 }
 
 button {
@@ -42,6 +50,13 @@ button:hover {
 button:active {
     background-color: white;
     color: black;
+}
+
+.searchArea {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 10px;
+    border: 1px solid gray;
 }
 
 .submitArea {
@@ -86,14 +101,35 @@ button:active {
     margin: 10px;
 }
 
-.noteContent {
-    /* To show newlines (and tabs if needed) */
-    white-space: pre-line;
-    /* white-space: pre-wrap; */
+.innerNoteEdit {
+    margin: 10px;
+}
+
+.noteChanged {
+    color: gray;
+    font-style: italic;
 }
 
 .noteTitle {
     font-weight: bold;
+}
+
+/* .noteTags {
+    color: goldenrod;
+} */
+
+.tag {
+    background-color: lightgray;
+    margin: 5px;
+    float:left;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.noteContent {
+    /* To show newlines (and tabs if needed) */
+    white-space: pre-line;
+    /* white-space: pre-wrap; */
 }
 
 .noteButtons {
