@@ -240,6 +240,16 @@ async def search_notes(item):
         'note_list': note_list
     }
 
+async def sync_notes(item):
+    for note in item['note_list']:
+        if note['method'] == 'POST':
+            await create_note(note)
+        # elif note['method'] == 'EDIT':
+        #     edit_note(note)
+        # elif note['method'] == 'DELETE':
+        #     delete_note(note)
+
+
 ### Routes #####################################################################
 
 @app.get("/")
@@ -256,35 +266,47 @@ async def websocket_endpoint(websocket: WebSocket):
 
     # await inspect_tags()
 
+    # Send last few notes to frontend at beginning
+    message = await read_notes()
+    await websocket.send_json(message)
+
     try:
         while True:
             # Wait for messages from frontend
             data = await websocket.receive_text()
             item = json.loads(data)
 
-            if item['method'] == 'POST':
-                # Send note back to frontend with correct ID, so it can be displayed
-                message = await create_note(item)
-                await websocket.send_json(message)
-
-            elif item['method'] == 'GET':
+            if item['method'] == 'GET':
                 # Send last few notes to frontend
                 message = await read_notes()
                 await websocket.send_json(message)
             
-            elif item['method'] == 'EDIT':
-                # Inform frontend that note has been edited on server
-                message = await edit_note(item)
+            elif item['method'] == 'SYNC':
+                # Sync notes and send them back
+                print(item)
+                await sync_notes(item)
+                message = await read_notes()
+                message['method'] = 'SYNC_BACK'
                 await websocket.send_json(message)
 
-            elif item['method'] == 'DELETE':
-                # Inform frontend that note has been removed on server
-                message = await delete_note(item)
-                await websocket.send_json(message)
+            # elif item['method'] == 'POST':
+            #     # Send note back to frontend with correct ID, so it can be displayed
+            #     message = await create_note(item)
+            #     await websocket.send_json(message)
             
-            elif item['method'] == 'SEARCH':
-                message = await search_notes(item)
-                await websocket.send_json(message)
+            # elif item['method'] == 'EDIT':
+            #     # Inform frontend that note has been edited on server
+            #     message = await edit_note(item)
+            #     await websocket.send_json(message)
+
+            # elif item['method'] == 'DELETE':
+            #     # Inform frontend that note has been removed on server
+            #     message = await delete_note(item)
+            #     await websocket.send_json(message)
+            
+            # elif item['method'] == 'SEARCH':
+            #     message = await search_notes(item)
+            #     await websocket.send_json(message)
                     
     except WebSocketDisconnect:
         print('WebSocket was closed!')
